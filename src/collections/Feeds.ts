@@ -38,7 +38,6 @@ export const Feeds: CollectionConfig = {
       type: 'textarea',
       required: true,
     },
-
     ...slugField(),
   ],
 }

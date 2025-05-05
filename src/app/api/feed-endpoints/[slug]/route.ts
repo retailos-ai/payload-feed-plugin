@@ -52,9 +52,11 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
       contentType = 'text/plain'
   }
 
+  console.log(contentType)
+
   return new NextResponse(rendered, {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': contentType,
     },
   })
 }

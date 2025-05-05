@@ -36,6 +36,22 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
   const engine = new Liquid()
   const rendered = await engine.parseAndRender(template, dataForTemplate)
 
+  let contentType: string
+
+  switch (feed.output_format) {
+    case 'json':
+      contentType = 'application/json'
+      break
+    case 'xml':
+      contentType = 'application/xml'
+      break
+    case 'html':
+      contentType = 'text/html'
+      break
+    default:
+      contentType = 'text/plain'
+  }
+
   return new NextResponse(rendered, {
     headers: {
       'Content-Type': 'application/json',

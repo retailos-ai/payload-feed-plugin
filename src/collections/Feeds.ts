@@ -22,13 +22,13 @@ export const Feeds: CollectionConfig = {
       required: true,
     },
     {
-      name: 'template_language',
-      label: 'Template Language',
+      name: 'output_format',
+      label: 'Output Format',
       type: 'select',
       options: [
         { label: 'JSON', value: 'json' },
-        { label: 'XML', value: 'USD' },
-        { label: 'HTML', value: 'EUR' },
+        { label: 'XML', value: 'xml' },
+        { label: 'HTML', value: 'html' },
       ],
       defaultValue: 'json',
       required: true,

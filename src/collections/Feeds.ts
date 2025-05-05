@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { slugField } from '@/fields/slug'
+import { outputFormatOptions } from '@/constants/outputFormats'
 
 export const Feeds: CollectionConfig = {
   slug: 'feeds',
@@ -26,11 +27,7 @@ export const Feeds: CollectionConfig = {
       name: 'output_format',
       label: 'Output Format',
       type: 'select',
-      options: [
-        { label: 'JSON', value: 'json' },
-        { label: 'XML', value: 'xml' },
-        { label: 'HTML', value: 'html' },
-      ],
+      options: outputFormatOptions.map(({ label, value }) => ({ label, value })),
       defaultValue: 'json',
       required: true,
     },
@@ -51,7 +48,7 @@ export const Feeds: CollectionConfig = {
 
   hooks: {
     beforeChange: [
-      // methode for update the URL field
+      //update the URL field acording to the Feed's slug
       ({ data, req }) => {
         const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
         if (data?.slug) data.url = `${baseUrl}/api/feed-endpoints/${data.slug}`

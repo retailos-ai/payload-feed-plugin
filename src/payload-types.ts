@@ -752,7 +752,23 @@ export interface Feed {
  */
 export interface Product {
   id: string;
-  name: string;
+  PRODUCT_NAME: string;
+  CATALOG_NUMBER?: string | null;
+  MODEL?: string | null;
+  DETAILS?: string | null;
+  PRODUCT_URL: string;
+  CURRENCY: 'ILS' | 'USD' | 'EUR';
+  PRICE: number;
+  SHIPMENT_COST?: number | null;
+  DELIVERY_TIME?: number | null;
+  PRODUCTCODE: string;
+  PRODUCT_TYPE: 'חדש' | 'מחודש' | 'משומש';
+  MANUFACTURER?: string | null;
+  IMAGE?: string | null;
+  WARRANTY?: number | null;
+  category: string | Category;
+  ISZAPPRODUCT?: boolean | null;
+  ISMARKETPLACEPRODUCT?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1332,7 +1348,23 @@ export interface FeedsSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
-  name?: T;
+  PRODUCT_NAME?: T;
+  CATALOG_NUMBER?: T;
+  MODEL?: T;
+  DETAILS?: T;
+  PRODUCT_URL?: T;
+  CURRENCY?: T;
+  PRICE?: T;
+  SHIPMENT_COST?: T;
+  DELIVERY_TIME?: T;
+  PRODUCTCODE?: T;
+  PRODUCT_TYPE?: T;
+  MANUFACTURER?: T;
+  IMAGE?: T;
+  WARRANTY?: T;
+  category?: T;
+  ISZAPPRODUCT?: T;
+  ISMARKETPLACEPRODUCT?: T;
   updatedAt?: T;
   createdAt?: T;
 }

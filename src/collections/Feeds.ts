@@ -21,6 +21,7 @@ export const Feeds: CollectionConfig = {
       type: 'text',
       required: true,
     },
+
     {
       name: 'output_format',
       label: 'Output Format',
@@ -38,6 +39,24 @@ export const Feeds: CollectionConfig = {
       type: 'textarea',
       required: true,
     },
+    {
+      name: 'url',
+      type: 'text',
+      admin: {
+        readOnly: true,
+      },
+    },
     ...slugField(),
   ],
+
+  hooks: {
+    beforeChange: [
+      // methode for update the URL field
+      ({ data, req }) => {
+        const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
+        if (data?.slug) data.url = `${baseUrl}/api/feed-endpoints/${data.slug}`
+        return data
+      },
+    ],
+  },
 }

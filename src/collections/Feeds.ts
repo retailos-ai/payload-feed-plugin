@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
-import { slugField } from '@/fields/slug'
 import { outputFormatOptions } from '@/constants/outputFormats'
 
 export const Feeds: CollectionConfig = {
@@ -60,7 +59,7 @@ export const Feeds: CollectionConfig = {
   hooks: {
     beforeChange: [
       ({ data, req }) => {
-        //update slug acording to name
+        //update slug from name
         if (typeof data?.name === 'string') {
           data.slug = data.name
             .toLowerCase()
@@ -69,7 +68,8 @@ export const Feeds: CollectionConfig = {
         }
         //update the URL field acording to the Feed's slug
         const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
-        if (data?.slug) data.url = `${baseUrl}/api/feed-endpoints/${data.slug}`
+        if (data?.slug)
+          data.url = `${baseUrl}/api/feed-endpoints/${data.slug}?token=${process.env.FEED_ACCESS_TOKEN}`
         return data
       },
     ],

@@ -5,6 +5,13 @@ import { Liquid } from 'liquidjs'
 import { outputFormatOptions } from '@/constants/outputFormats'
 
 export async function GET(req: NextRequest, context: { params: { slug: string } }) {
+  // get access token from the quary
+  const token = req.nextUrl.searchParams.get('token')
+  if (token !== process.env.FEED_ACCESS_TOKEN) {
+    return new NextResponse('Forbidden', { status: 403 })
+  }
+  // ***
+
   // get template
   const { slug } = context.params
 

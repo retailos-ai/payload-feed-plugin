@@ -21,6 +21,7 @@ export const Feeds: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      unique: true,
     },
 
     {
@@ -43,13 +44,30 @@ export const Feeds: CollectionConfig = {
         readOnly: true,
       },
     },
-    ...slugField(),
+    {
+      name: 'slug',
+      label: 'Slug',
+      type: 'text',
+      required: true,
+      unique: true,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
   ],
 
   hooks: {
     beforeChange: [
-      //update the URL field acording to the Feed's slug
       ({ data, req }) => {
+        //update slug acording to name
+        if (typeof data?.name === 'string') {
+          data.slug = data.name
+            .toLowerCase()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-zA-Z0-9\-]/g, '')
+        }
+        //update the URL field acording to the Feed's slug
         const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
         if (data?.slug) data.url = `${baseUrl}/api/feed-endpoints/${data.slug}`
         return data

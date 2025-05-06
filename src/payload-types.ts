@@ -741,8 +741,7 @@ export interface Feed {
   output_format: 'json' | 'xml' | 'html';
   template: string;
   url?: string | null;
-  slug?: string | null;
-  slugLock?: boolean | null;
+  slug: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1339,7 +1338,6 @@ export interface FeedsSelect<T extends boolean = true> {
   template?: T;
   url?: T;
   slug?: T;
-  slugLock?: T;
   updatedAt?: T;
   createdAt?: T;
 }

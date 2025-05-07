@@ -740,8 +740,11 @@ export interface Feed {
   name: string;
   output_format: 'json' | 'xml' | 'html';
   template: string;
-  url?: string | null;
   slug: string;
+  url?: string | null;
+  pagination_enabled?: boolean | null;
+  pagination_page?: number | null;
+  pagination_limit?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1336,8 +1339,11 @@ export interface FeedsSelect<T extends boolean = true> {
   name?: T;
   output_format?: T;
   template?: T;
-  url?: T;
   slug?: T;
+  url?: T;
+  pagination_enabled?: T;
+  pagination_page?: T;
+  pagination_limit?: T;
   updatedAt?: T;
   createdAt?: T;
 }

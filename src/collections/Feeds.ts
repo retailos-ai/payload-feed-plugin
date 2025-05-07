@@ -4,6 +4,8 @@ import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { outputFormatOptions } from '@/constants/outputFormats'
 
+import jwt from 'jsonwebtoken'
+
 export const Feeds: CollectionConfig = {
   slug: 'feeds',
   access: {
@@ -37,13 +39,6 @@ export const Feeds: CollectionConfig = {
       required: true,
     },
     {
-      name: 'url',
-      type: 'text',
-      admin: {
-        readOnly: true,
-      },
-    },
-    {
       name: 'slug',
       label: 'Slug',
       type: 'text',
@@ -54,11 +49,42 @@ export const Feeds: CollectionConfig = {
         readOnly: true,
       },
     },
+    {
+      name: 'url',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+
+    {
+      name: 'pagination_enabled',
+      label: 'Enable Pagination',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
+      name: 'pagination_page',
+      label: 'Default Page',
+      type: 'number',
+      admin: {
+        condition: (_, siblingData) => siblingData.pagination_enabled === true,
+      },
+    },
+    {
+      name: 'pagination_limit',
+      label: 'Items Per Page',
+      type: 'number',
+      admin: {
+        condition: (_, siblingData) => siblingData.pagination_enabled === true,
+      },
+    },
   ],
 
   hooks: {
     beforeChange: [
-      ({ data, req }) => {
+      ({ data }) => {
         //update slug from name
         if (typeof data?.name === 'string') {
           data.slug = data.name
@@ -66,10 +92,35 @@ export const Feeds: CollectionConfig = {
             .replace(/\s+/g, '-')
             .replace(/[^a-zA-Z0-9\-]/g, '')
         }
+
         //update the URL field acording to the Feed's slug
+        if (!process.env.NEXT_PUBLIC_SERVER_URL)
+          throw new Error('Missing NEXT_PUBLIC_SERVER_URL in environment variables')
         const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
-        if (data?.slug)
-          data.url = `${baseUrl}/api/feed-endpoints/${data.slug}?token=${process.env.FEED_ACCESS_TOKEN}`
+        const url = new URL(`${baseUrl}/api/feed-endpoints/${data.slug}`)
+
+        // generate token and add to url
+        if (!process.env.FEED_JWT_SECRET)
+          throw new Error('Missing FEED_JWT_SECRET in environment variables')
+        const secret = process.env.FEED_JWT_SECRET
+        const token = jwt.sign(
+          {
+            slug: data.slug,
+          },
+          secret,
+          {
+            algorithm: 'HS256',
+          },
+        )
+        url.searchParams.set('token', token || '')
+
+        // add pagination settings
+        if (data?.pagination_enabled) {
+          if (data.pagination_page) url.searchParams.set('page', data.pagination_page.toString())
+          if (data.pagination_limit) url.searchParams.set('limit', data.pagination_limit.toString())
+        }
+
+        data.url = url.toString()
         return data
       },
     ],

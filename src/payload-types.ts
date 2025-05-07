@@ -739,6 +739,7 @@ export interface Feed {
   id: string;
   name: string;
   output_format: 'json' | 'xml' | 'html';
+  collection: 'products' | 'categories' | 'pages';
   template: string;
   slug: string;
   url?: string | null;
@@ -1338,6 +1339,7 @@ export interface UsersSelect<T extends boolean = true> {
 export interface FeedsSelect<T extends boolean = true> {
   name?: T;
   output_format?: T;
+  collection?: T;
   template?: T;
   slug?: T;
   url?: T;

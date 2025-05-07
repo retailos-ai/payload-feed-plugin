@@ -3,6 +3,8 @@ import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
 import { Liquid } from 'liquidjs'
 import { outputFormatOptions } from '@/constants/outputFormats'
+import { feedAllowedCollections } from '@/constants/feedAllowedCollections'
+
 import jwt from 'jsonwebtoken'
 
 export async function GET(req: NextRequest, context: { params: { slug: string } }) {
@@ -36,9 +38,14 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
   const page = parseInt(req.nextUrl.searchParams.get('page') || '1')
   const limit = parseInt(req.nextUrl.searchParams.get('limit') || '100')
 
+  // get collection
+  const collection = feed.collection
+  if (!feedAllowedCollections.find((c) => c.value === collection))
+    return new NextResponse('Invalid collection', { status: 400 })
+
   // get products from db
   const productsQuery = await payload.find({
-    collection: 'products',
+    collection: collection,
     pagination: usePagination,
     ...(usePagination ? { page, limit } : {}),
   })

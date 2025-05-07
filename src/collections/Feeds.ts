@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { outputFormatOptions } from '@/constants/outputFormats'
+import { feedAllowedCollections } from '@/constants/feedAllowedCollections'
 
 import jwt from 'jsonwebtoken'
 
@@ -31,6 +32,14 @@ export const Feeds: CollectionConfig = {
       type: 'select',
       options: outputFormatOptions.map(({ label, value }) => ({ label, value })),
       defaultValue: 'json',
+      required: true,
+    },
+
+    {
+      name: 'collection',
+      label: 'Collection',
+      type: 'select',
+      options: await feedAllowedCollections,
       required: true,
     },
     {

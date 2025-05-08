@@ -1,3 +1,4 @@
+// src/app/api/feed-endpoints/[slug]/route.ts
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
@@ -43,24 +44,24 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
   if (!feedAllowedCollections.find((c) => c.value === collection))
     return new NextResponse('Invalid collection', { status: 400 })
 
-  // get products from db
-  const productsQuery = await payload.find({
+  // get items from db
+  const itemsQuery = await payload.find({
     collection: collection,
     pagination: usePagination,
     ...(usePagination ? { page, limit } : {}),
   })
-  const products = productsQuery.docs
+  const items = itemsQuery.docs
 
   // work on tamplate
   const dataForTemplate = {
-    products,
+    items,
     pagination: usePagination
       ? {
-          page: productsQuery.page,
-          total: productsQuery.totalDocs,
-          totalPages: productsQuery.totalPages,
-          hasNext: productsQuery.hasNextPage,
-          hasPrev: productsQuery.hasPrevPage,
+          page: itemsQuery.page,
+          total: itemsQuery.totalDocs,
+          totalPages: itemsQuery.totalPages,
+          hasNext: itemsQuery.hasNextPage,
+          hasPrev: itemsQuery.hasPrevPage,
         }
       : undefined,
   }

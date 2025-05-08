@@ -1,10 +1,10 @@
-import type { CollectionConfig } from 'payload'
+// src/collections/Feeds.ts
 
+import type { CollectionConfig } from 'payload'
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
 import { outputFormatOptions } from '@/constants/outputFormats'
 import { feedAllowedCollections } from '@/constants/feedAllowedCollections'
-
 import jwt from 'jsonwebtoken'
 
 export const Feeds: CollectionConfig = {

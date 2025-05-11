@@ -1,9 +1,9 @@
-// src/collections/Feeds.ts
+// src/collections/Feeds/index.ts
 
 import type { CollectionConfig } from 'payload'
-import { anyone } from '../access/anyone'
-import { authenticated } from '../access/authenticated'
-import { outputFormatOptions } from '@/constants/outputFormats'
+import { anyone } from '../../access/anyone'
+import { authenticated } from '../../access/authenticated'
+import { contentTypeOptions } from '@/constants/ContentTypes'
 import { feedAllowedCollections } from '@/constants/feedAllowedCollections'
 import jwt from 'jsonwebtoken'
 
@@ -30,7 +30,7 @@ export const Feeds: CollectionConfig = {
       name: 'output_format',
       label: 'Output Format',
       type: 'select',
-      options: outputFormatOptions.map(({ label, value }) => ({ label, value })),
+      options: contentTypeOptions.map(({ label, value }) => ({ label, value })),
       defaultValue: 'json',
       required: true,
     },
@@ -106,7 +106,7 @@ export const Feeds: CollectionConfig = {
         if (!process.env.NEXT_PUBLIC_SERVER_URL)
           throw new Error('Missing NEXT_PUBLIC_SERVER_URL in environment variables')
         const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL
-        const url = new URL(`${baseUrl}/api/feed-endpoints/${data.slug}`)
+        const url = new URL(`${baseUrl}/feeds/${data.slug}`)
 
         // generate token and add to url
         if (!process.env.FEED_JWT_SECRET)

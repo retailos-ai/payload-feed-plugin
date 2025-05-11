@@ -1,8 +1,8 @@
-export type OutputFormat = 'json' | 'xml' | 'html'
+export type ContentType = 'json' | 'xml' | 'html'
 
-export const outputFormatOptions: {
+export const contentTypeOptions: {
   label: string
-  value: OutputFormat
+  value: ContentType
   contentType: string
 }[] = [
   {

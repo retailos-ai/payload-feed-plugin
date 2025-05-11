@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
 import { Liquid } from 'liquidjs'
-import { outputFormatOptions } from '@/constants/outputFormats'
+import { contentTypeOptions } from '@/constants/ContentTypes'
 import { feedAllowedCollections } from '@/constants/feedAllowedCollections'
 
 import jwt from 'jsonwebtoken'
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
   const engine = new Liquid()
   const rendered = await engine.parseAndRender(feed.template, dataForTemplate)
 
-  const selectedFormat = outputFormatOptions.find((f) => f.value === feed.output_format)
+  const selectedFormat = contentTypeOptions.find((f) => f.value === feed.output_format)
   const contentType = selectedFormat?.contentType || 'text/plain'
 
   return new NextResponse(rendered, {

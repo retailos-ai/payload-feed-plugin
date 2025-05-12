@@ -27,8 +27,8 @@ export const Feeds: CollectionConfig = {
     },
 
     {
-      name: 'output_format',
-      label: 'Output Format',
+      name: 'content_type',
+      label: 'Content Type',
       type: 'select',
       options: contentTypeOptions.map(({ label, value }) => ({ label, value })),
       defaultValue: 'json',

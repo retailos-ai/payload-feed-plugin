@@ -738,7 +738,7 @@ export interface Form {
 export interface Feed {
   id: string;
   name: string;
-  output_format: 'json' | 'xml' | 'html';
+  content_type: 'json' | 'xml' | 'html';
   collection: 'products' | 'categories' | 'pages';
   template: string;
   slug: string;
@@ -1338,7 +1338,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface FeedsSelect<T extends boolean = true> {
   name?: T;
-  output_format?: T;
+  content_type?: T;
   collection?: T;
   template?: T;
   slug?: T;

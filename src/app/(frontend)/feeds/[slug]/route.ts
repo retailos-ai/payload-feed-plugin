@@ -1,4 +1,4 @@
-// src/app/api/feed-endpoints/[slug]/route.ts
+// src/app/(frontend)/feeds/[slug]/route.ts
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { NextRequest, NextResponse } from 'next/server'
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
   const engine = new Liquid()
   const rendered = await engine.parseAndRender(feed.template, dataForTemplate)
 
-  const selectedFormat = contentTypeOptions.find((f) => f.value === feed.output_format)
+  const selectedFormat = contentTypeOptions.find((f) => f.value === feed.content_type)
   const contentType = selectedFormat?.contentType || 'text/plain'
 
   return new NextResponse(rendered, {

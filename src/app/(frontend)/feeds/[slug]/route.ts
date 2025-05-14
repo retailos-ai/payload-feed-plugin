@@ -11,16 +11,6 @@ import jwt from 'jsonwebtoken'
 export async function GET(req: NextRequest, context: { params: { slug: string } }) {
   const { slug } = context.params
 
-  // verify access token
-  const token = req.nextUrl.searchParams.get('token')
-  const secret = process.env.FEED_JWT_SECRET
-  try {
-    let decoded = jwt.verify(token || '', secret!)
-    if (typeof decoded !== 'object' || decoded.slug !== slug) throw new Error('Slug mismatch')
-  } catch (err) {
-    return new NextResponse('Forbidden: Invalid or missing token', { status: 403 })
-  }
-
   // get feed according to slug
   const payload = await getPayload({ config: configPromise })
   const feedDoc = await payload.find({
@@ -33,6 +23,14 @@ export async function GET(req: NextRequest, context: { params: { slug: string } 
   })
   const feed = feedDoc.docs?.[0]
   if (!feed) return new NextResponse('Feed not found', { status: 404 })
+
+  // verify access token
+  const token = req.nextUrl.searchParams.get('token')
+  if (token !== feed.token)
+    return new NextResponse('Forbidden: Invalid or missing token', { status: 403 })
+
+  // check if Feed is active
+  if (!feed.is_active) return new NextResponse('Feed is disabled', { status: 403 })
 
   // pagination settings
   const usePagination = feed.pagination_enabled === true

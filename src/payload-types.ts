@@ -738,14 +738,20 @@ export interface Form {
 export interface Feed {
   id: string;
   name: string;
+  Description?: string | null;
   content_type: 'json' | 'xml' | 'html';
   collection: 'products' | 'categories' | 'pages';
-  template: string;
-  slug: string;
-  url?: string | null;
   pagination_enabled?: boolean | null;
   pagination_page?: number | null;
   pagination_limit?: number | null;
+  template: string;
+  is_active?: boolean | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  type_name?: string | null;
+  token?: string | null;
+  url?: string | null;
+  last_Modified_By?: (string | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1338,14 +1344,20 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface FeedsSelect<T extends boolean = true> {
   name?: T;
+  Description?: T;
   content_type?: T;
   collection?: T;
-  template?: T;
-  slug?: T;
-  url?: T;
   pagination_enabled?: T;
   pagination_page?: T;
   pagination_limit?: T;
+  template?: T;
+  is_active?: T;
+  slug?: T;
+  slugLock?: T;
+  type_name?: T;
+  token?: T;
+  url?: T;
+  last_Modified_By?: T;
   updatedAt?: T;
   createdAt?: T;
 }

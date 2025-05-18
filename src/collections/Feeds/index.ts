@@ -30,6 +30,7 @@ export const Feeds: CollectionConfig = {
       name: 'Description',
       type: 'textarea',
     },
+
     {
       name: 'content_type',
       label: 'Content Type',
@@ -53,18 +54,27 @@ export const Feeds: CollectionConfig = {
       type: 'checkbox',
       defaultValue: false,
     },
+
     {
-      name: 'pagination_page',
-      label: 'Default Page',
-      type: 'number',
-      admin: {
-        condition: (_, siblingData) => siblingData.pagination_enabled === true,
-      },
-    },
-    {
-      name: 'pagination_limit',
-      label: 'Items Per Page',
-      type: 'number',
+      type: 'row',
+      fields: [
+        {
+          name: 'pagination_page',
+          label: 'Default Page',
+          type: 'number',
+          admin: {
+            width: '50%',
+          },
+        },
+        {
+          name: 'pagination_limit',
+          label: 'Items Per Page',
+          type: 'number',
+          admin: {
+            width: '50%',
+          },
+        },
+      ],
       admin: {
         condition: (_, siblingData) => siblingData.pagination_enabled === true,
       },
@@ -72,8 +82,11 @@ export const Feeds: CollectionConfig = {
 
     {
       name: 'template',
-      type: 'textarea',
+      type: 'code',
       required: true,
+      admin: {
+        language: 'html',
+      },
     },
 
     {
